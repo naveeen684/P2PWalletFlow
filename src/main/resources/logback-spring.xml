@@ -1,0 +1,32 @@
+<configuration>
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <timeZone>UTC</timeZone>
+            <includeMdc>true</includeMdc>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="JSON"/>
+    </root>
+
+    <springProfile name="local">
+        <appender name="LOCAL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>logs/wallet-transfer-service.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>logs/wallet-transfer-service.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+                <maxHistory>7</maxHistory>
+                <totalSizeCap>100MB</totalSizeCap>
+            </rollingPolicy>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <timeZone>UTC</timeZone>
+                <includeMdc>true</includeMdc>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="JSON"/>
+            <appender-ref ref="LOCAL_FILE"/>
+        </root>
+    </springProfile>
+</configuration>
+
